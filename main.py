@@ -10,12 +10,16 @@ import json
 f = open('userdata.json',)
 userdata = json.load(f)
 f.close()
-if userdata['email'] != "*":
+if userdata['email'] == "*":
     print("You haven't put your details in userdata.json!")
     email = input("Enter your email : ")
     password = input("Enter your password : ")
     f = open('userdata.json','w')
     f.write("{\"email\": \"" + email + ",\"password\" : \""+password+"\"}")
+    f.close()
+
+    f = open('userdata.json',)
+    userdata = json.load(f)
     f.close()
 print("Found email in userdata.json : ",userdata['email'])
 print("Found password in userdata.json : ",len(userdata['password'])*"*")
