@@ -3,6 +3,7 @@ from fetch.announcements import *
 from fetch.material import *
 from record.recorder import *
 from meet.get_meets import *
+from meet.join import *
 import webbrowser
 import time
 import os
@@ -14,8 +15,11 @@ if userdata['email'] == "*":
     print("You haven't put your details in userdata.json!")
     email = input("Enter your email : ")
     password = input("Enter your password : ")
+    attendance = input("What do you write in the chat to mark your attendance? : ")
+    account_index = str(int(input("What is your account index (Open chrome, click on your pfp, check which place is the account you are using for this program and write it here, write 1 if it is the default account):"))-1)
+    
     f = open('userdata.json','w')
-    f.write("{\"email\": \"" + email + ",\"password\" : \""+password+"\"}")
+    f.write("{\"email\": \"" + email + "\",\"password\" : \""+password+"\",\"attendance\" : \""+attendance+"\",\"account_index\" : "+account_index+"}")
     f.close()
 
     f = open('userdata.json',)
@@ -59,14 +63,14 @@ while True :
         for url in a[0]:
             print("Found an assignment! : " + url+",","Subject :",a[1][a[0].index(url)],"\n")
             
-            webbrowser.open("https://classroom.google.com/u/2/"+url[29:],new=2)
+            webbrowser.open("https://classroom.google.com/u/"+str(userdata["account_index"])+"/"+url[29:],new=2)
     if ans == 2:
         print("Fetching all announcements...")
         a = get_announcements(userdata)
         for url in a[0]:
             print("Found an announcement! : " + url + ",","Subject :",a[1][a[0].index(url)],"\n")
             
-            webbrowser.open("https://classroom.google.com/u/2/"+url[29:],new=2)
+            webbrowser.open("https://classroom.google.com/u/"+str(userdata["account_index"])+"/"+url[29:],new=2)
     if ans == 3:
         print("Hold down E to exit listening for class meet links")
         while True:
@@ -88,6 +92,8 @@ while True :
                         links.append(i)
                     print("Recieved a meet link : " + i,"\n")
                     webbrowser.open(urls[0],new=2)
+                    time.sleep(3)
+                    join_meet(userdata["attendance"])
             for i in range(5):
                 time.sleep(2)
                 if keyboard.is_pressed('e'):
@@ -98,7 +104,7 @@ while True :
         for url in a[0]:
             print("Found material! : " + url + ",","Subject :",a[1],"\n")
             
-            webbrowser.open("https://classroom.google.com/u/2/"+url[29:],new=2)
+            webbrowser.open("https://classroom.google.com/u/"+str(userdata["account_index"])+"/"+url[29:],new=2)
     if ans == 5:
         print("We expect you may be ONE of these devices to hear audio from the class")
         for i in get_devices():

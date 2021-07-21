@@ -39,7 +39,7 @@ def get_meet(userdata):
                         
                         link = "https://"+str(response[1])[acquired:acquired2]
                         if "authuser=" in link:
-                            link = link[:link.index("authuser=")+8]+"=2"+link[link.index("authuser=")+10:]
+                            link = link[:link.index("authuser=")+8]+"="+str(userdata["account_index"])+link[link.index("authuser=")+10:]
                         elif not "lookup" in link:
                             link += "?authuser=2"
                             
